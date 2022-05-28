@@ -18,13 +18,14 @@ if [ $number == 2 ]; then
         sudo yum update -y
         sudo yum install curl -y
         sudo yum install unzip -y
+        sudo yum remove awscli -y
     fi
     if [ -n "$(command -v apt)" ]; then
         sudo apt update -y
         sudo apt install curl -y
         sudo apt install unzip -y
+        sudo apt remove awscli -y
     fi
-    sudo yum remove awscli -y
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip awscliv2.zip
     sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
