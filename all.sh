@@ -1,4 +1,4 @@
-echo "[1] Kubectl\n[2] AWSCLI v2"
+echo -e "[1] Kubectl\n[2] AWSCLI v2"
 read number
 
 if [ number == 1]; then
