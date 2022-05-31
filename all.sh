@@ -63,7 +63,9 @@ if [ $number == 4 ]; then
             arch="amd64"
             sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_$arch/amazon-ssm-agent.rpm
             sudo systemctl start amazon-ssm-agent
-            sudo systemctl enable amazon-ssm-agent
+            while ! sudo systemctl status amazon-ssm-agent | grep -q "running"; do 
+                echo "Service is Not Active Yet"
+            done
         fi
         if [ $test == "x86" ]; then 
             arch="386"
@@ -86,6 +88,5 @@ if [ $number == 4 ]; then
         while ! sudo systemctl status amazon-ssm-agent | grep -q "running"; do 
             echo "Service is Not Active Yet"
         done
-        sudo systemctl enable amazon-ssm-agent
     fi
 fi
