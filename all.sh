@@ -92,7 +92,9 @@ if [ $number == 4 ]; then
 fi
 if [ $number == 5 ]; then
     if [ -n "$(command -v yum)" ]; then
-        echo "NOT ADDED FOR THIS OS"
+        sudo yum update -y
+        sudo yum install curl -y
+        curl https://intoli.com/install-google-chrome.sh | bash
     fi
     if [ -n "$(command -v apt)" ]; then
         sudo apt update -y
