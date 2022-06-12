@@ -1,4 +1,4 @@
-echo -e "[1] Kubectl\n[2] AWSCLI v2\n[3] PRITUNL CLIENT\n[4] SSM AGENT\n[5] GOOGLE CHROME"
+echo -e "[1] Kubectl\n[2] AWSCLI v2\n[3] PRITUNL CLIENT\n[4] SSM AGENT\n[5] GOOGLE CHROME\n[6] VNC VIEWER"
 read number
 
 if [ $number == 1 ]; then
@@ -103,5 +103,20 @@ if [ $number == 5 ]; then
         echo "deb [arch=$arch] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
         sudo apt-get update 
         sudo apt-get install google-chrome-stable
+    fi
+fi
+if [ $number == 6 ]; then
+    if [ -n "$(command -v yum)" ]; then
+        echo "NOT ADDED FOR THIS OS"
+    fi
+    if [ -n "$(command -v apt)" ]; then
+        sudo apt update -y
+        arch=$(dpkg --print-architecture)
+        if [ $arch == "arm64" ]; then
+            wget https://downloads.realvnc.com/download/file/viewer.files/VNC-Viewer-6.22.315-Linux-x64.deb
+            sudo dpkg -i VNC-Viewer-6.22.315-Linux-x64.deb
+        else 
+            echo "Not Added For This Architecture"
+        fi
     fi
 fi
