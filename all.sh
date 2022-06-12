@@ -1,4 +1,11 @@
-echo -e "[1] Kubectl\n[2] AWSCLI v2\n[3] PRITUNL CLIENT\n[4] SSM AGENT\n[5] GOOGLE CHROME\n[6] VNC VIEWER"
+echo -e "[1] KUBECTL
+[2] AWSCLI v2
+[3] PRITUNL CLIENT
+[4] SSM AGENT
+[5] GOOGLE CHROME
+[6] VNC VIEWER
+[7] VS CODE
+"
 read number
 
 if [ $number == 1 ]; then
@@ -118,5 +125,18 @@ if [ $number == 6 ]; then
         else 
             echo "Not Added For This Architecture"
         fi
+    fi
+fi
+if [ $number == 7 ]; then
+    if [ -n "$(command -v yum)" ]; then
+        echo "NOT ADDED FOR THIS OS"
+    fi
+    if [ -n "$(command -v apt)" ]; then
+        sudo apt update -y
+        sudo apt install software-properties-common apt-transport-https wget
+        wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+        arch=$(dpkg --print-architecture)
+        sudo add-apt-repository "deb [arch=$arch] https://packages.microsoft.com/repos/vscode stable main"
+        sudo apt install code -y
     fi
 fi
