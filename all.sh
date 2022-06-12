@@ -1,4 +1,4 @@
-echo -e "[1] Kubectl\n[2] AWSCLI v2\n[3] PRITUNL CLIENT\n[4] SSM AGENT"
+echo -e "[1] Kubectl\n[2] AWSCLI v2\n[3] PRITUNL CLIENT\n[4] SSM AGENT\n[5] GOOGLE CHROME"
 read number
 
 if [ $number == 1 ]; then
@@ -88,5 +88,18 @@ if [ $number == 4 ]; then
         while ! sudo systemctl status amazon-ssm-agent | grep -q "running"; do 
             echo "Service is Not Active Yet"
         done
+    fi
+fi
+if [ $number == 5 ]; then
+    if [ -n "$(command -v yum)" ]; then
+        echo "NOT ADDED FOR THIS OS"
+    fi
+    if [ -n "$(command -v apt)" ]; then
+        sudo apt update -y
+        arch=$(dpkg --print-architecture)
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb [arch=$arch] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update 
+        sudo apt-get install google-chrome-stable
     fi
 fi
