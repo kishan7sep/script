@@ -160,6 +160,10 @@ EOF
         sudo /usr/pgsql-$version/bin/postgresql-$version-setup initdb
         sudo systemctl enable --now postgresql-$version
         systemctl status postgresql-$version
+        echo -e "TO ACCESS POSTGRESS DATABASSE :
+        sudo su - postgres
+        psql
+        "
     fi
     if [ -n "$(command -v apt)" ]; then
         sudo apt update -y
@@ -170,5 +174,47 @@ EOF
         echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
         sudo apt update -y
         sudo apt install postgresql-$version postgresql-client-$version -y
+        echo -e "TO ACCESS POSTGRESS DATABASSE :
+        sudo su - postgres
+        psql
+        "
+    fi
+fi
+if [ $number == 9 ]; then
+    if [ -n "$(command -v yum)" ]; then
+        sudo yum update -y
+        curl -Lo kong-enterprise-edition-2.8.1.1.amzn2.noarch.rpm "https://download.konghq.com/gateway-2.x-amazonlinux-2/Packages/k/kong-enterprise-edition-2.8.1.1.amzn2.noarch.rpm"
+        sudo yum install kong-enterprise-edition-2.8.1.1.amzn2.noarch.rpm
+        echo -e " INSTALL POSTGRESSQL DATABASE 
+        # CREATE KONG USER IN POSTGRESS
+        CREATE USER kong WITH PASSWORD 'password'; CREATE DATABASE kong OWNER kong;
+        # EDIT KONG CONFIG 
+        sudo nano /etc/kong/kong.conf.default (like postress password and open admin api at 0.0.0.0)
+
+        # START KONG
+        sudo KONG_PASSWORD=kong /usr/local/bin/kong migrations bootstrap -c /etc/kong/kong.conf.default
+        sudo /usr/local/bin/kong start -c /etc/kong/kong.conf.default
+
+        # UI FOR KONG
+        http://<IP>:8002
+        "
+    fi
+    if [ -n "$(command -v apt)" ]; then
+        sudo apt update -y
+        curl -Lo kong-enterprise-edition-2.8.1.1.all.deb "https://download.konghq.com/gateway-2.x-ubuntu-$(lsb_release -sc)/pool/all/k/kong-enterprise-edition/kong-enterprise-edition_2.8.1.1_all.deb"
+        sudo dpkg -i kong-enterprise-edition-2.8.1.1.all.deb
+        echo -e " INSTALL POSTGRESSQL DATABASE 
+        # CREATE KONG USER IN POSTGRESS
+        CREATE USER kong WITH PASSWORD 'password'; CREATE DATABASE kong OWNER kong;
+        # EDIT KONG CONFIG 
+        sudo nano /etc/kong/kong.conf.default (like postress password and open admin api at 0.0.0.0)
+
+        # START KONG
+        sudo KONG_PASSWORD=kong /usr/local/bin/kong migrations bootstrap -c /etc/kong/kong.conf.default
+        sudo /usr/local/bin/kong start -c /etc/kong/kong.conf.default
+
+        # UI FOR KONG
+        http://<IP>:8002
+        "
     fi
 fi
