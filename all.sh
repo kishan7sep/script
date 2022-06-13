@@ -8,6 +8,8 @@ echo -e "[1] KUBECTL
 [8] PostgresSQL
 [9] KONG GATEWAY
 [10] JENKINS
+[11] OPEN SEARCH
+[12] LOGSTASH
 "
 read number
 
@@ -242,5 +244,91 @@ if [ $number == 10 ]; then
         sudo apt install jenkins -y
         sudo systemctl start jenkins
         sudo systemctl status jenkins
+    fi
+fi
+if [ $number == 11 ]; then
+    if [ -n "$(command -v yum)" ]; then
+        sudo yum update -y
+        sudo curl -SL https://artifacts.opensearch.org/releases/bundle/opensearch/2.x/opensearch-2.x.repo -o /etc/yum.repos.d/2.x.repo
+        sudo yum install opensearch -y
+        sudo systemctl start opensearch.service
+        sudo curl -SL https://artifacts.opensearch.org/releases/bundle/opensearch-dashboards/2.x/opensearch-dashboards-2.x.repo -o /etc/yum.repos.d/2.x.repo
+        sudo yum install opensearch-dashboards -y
+        sudo systemctl start opensearch-dashboards.service
+        echo -e "TO ACCESS OPENSEARCH DASHBOARD YOU NEED TO SETUP NGINX VIRTUAL HOST
+        server {
+            listen 80;
+            location / {
+                proxy_pass http://localhost:5601;
+            }
+        }
+
+        IF USING LOGSTASH FOR LOGGING HERE IS SAMPLE 
+
+input {
+ file {
+   type => "json"
+   path => "/home/ec2-user/file4.json"
+   start_position => beginning
+ }
+  #http {
+   #  host => "127.0.0.1"
+    # port => 8080
+  #}
+}
+
+filter {
+ json {
+   source => "message"
+ }
+ mutate {
+  copy => { "_id" => "[@metadata][_id]"}
+  remove_field => ["_id"]
+ }
+}
+
+output {
+    opensearch {
+        hosts       => ["https://localhost:9200"]
+        user        => "admin"
+        password    => "admin"
+        index       => "logstash-logs-%{+YYYY.MM.dd}"
+        ecs_compatibility => disabled
+        ssl_certificate_verification => false
+    }
+}
+"
+    fi
+    if [ -n "$(command -v apt)" ]; then
+        echo "NOT ADDED FOR THIS OS"
+    fi
+fi
+if [ $number == 12 ]; then
+    echo -e "Logstash Version ? :"
+    read version
+    if [ -n "$(command -v yum)" ]; then
+        sudo yum update -y
+        sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+cat << EOF > /etc/yum.repos.d/logstash.repo
+[logstash-$version.x]
+name=Elastic repository for $version.x packages
+baseurl=https://artifacts.elastic.co/packages/$version.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+EOF
+        sudo yum install logstash -y
+        echo -e "to use logstash  
+         /usr/share/logstash/bin/logstash -f /etc/logstash/logstash-sample.conf
+        "
+    fi
+    if [ -n "$(command -v apt)" ]; then
+        sudo apt update -y
+        wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+        sudo apt-get install apt-transport-https
+        echo "deb https://artifacts.elastic.co/packages/$version.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-$version.x.list
+        sudo apt-get update && sudo apt-get install logstash -y
     fi
 fi
