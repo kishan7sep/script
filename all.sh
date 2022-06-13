@@ -7,6 +7,7 @@ echo -e "[1] KUBECTL
 [7] VS CODE
 [8] PostgresSQL
 [9] KONG GATEWAY
+[10] JENKINS
 "
 read number
 
@@ -217,5 +218,29 @@ if [ $number == 9 ]; then
         # UI FOR KONG
         http://<IP>:8002
         "
+    fi
+fi
+if [ $number == 10 ]; then
+    if [ -n "$(command -v yum)" ]; then
+        sudo yum update -y
+        sudo wget -O /etc/yum.repos.d/jenkins.repo \
+            https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+        sudo yum upgrade -y 
+        sudo amazon-linux-extras install java-openjdk11 -y
+        sudo yum install jenkins -y
+        sudo systemctl enable jenkins
+        sudo systemctl start jenkins
+        sudo systemctl status jenkins
+    fi
+    if [ -n "$(command -v apt)" ]; then
+        sudo apt update -y
+        sudo apt install openjdk-8-jdk -y
+        wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add
+        sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+        sudo apt update -y
+        sudo apt install jenkins -y
+        sudo systemctl start jenkins
+        sudo systemctl status jenkins
     fi
 fi
