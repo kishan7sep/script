@@ -6,6 +6,7 @@ echo -e "[1] KUBECTL
 [6] VNC VIEWER
 [7] VS CODE
 [8] PostgresSQL
+[9] KONG GATEWAY
 "
 read number
 
