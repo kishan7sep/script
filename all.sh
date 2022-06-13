@@ -5,6 +5,7 @@ echo -e "[1] KUBECTL
 [5] GOOGLE CHROME
 [6] VNC VIEWER
 [7] VS CODE
+[8] PostgresSQL
 "
 read number
 
@@ -138,5 +139,36 @@ if [ $number == 7 ]; then
         arch=$(dpkg --print-architecture)
         sudo add-apt-repository "deb [arch=$arch] https://packages.microsoft.com/repos/vscode stable main"
         sudo apt install code -y
+    fi
+fi
+if [ $number == 8 ]; then
+    if [ -n "$(command -v yum)" ]; then
+        echo -e "PostgresSQL Version ? :"
+        read version
+        sudo yum -y update
+        sudo amazon-linux-extras install epel
+        sudo  amazon-linux-extras | grep postgre
+sudo tee /etc/yum.repos.d/pgdg.repo<<EOF
+sudo tee /etc/yum.repos.d/pgdg.repo<<EOF
+[pgdg$version]
+name=PostgreSQL $version for RHEL/CentOS 7 - x86_64
+baseurl=http://download.postgresql.org/pub/repos/yum/$version/redhat/rhel-7-x86_64
+enabled=1
+gpgcheck=0
+EOF
+        sudo yum install postgresql$version postgresql$version-server
+        sudo /usr/pgsql-$version/bin/postgresql-$version-setup initdb
+        sudo systemctl enable --now postgresql-$version
+        systemctl status postgresql-$version
+    fi
+    if [ -n "$(command -v apt)" ]; then
+        sudo apt update -y
+        echo -e "PostgresSQL Version ? :"
+        read version
+        sudo apt install curl gpg gnupg2 software-properties-common apt-transport-https lsb-release ca-certificates
+        curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+        echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
+        sudo apt update -y
+        sudo apt install postgresql-$version postgresql-client-$version -y
     fi
 fi
