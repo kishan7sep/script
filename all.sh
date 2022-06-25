@@ -65,6 +65,49 @@ EOF
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 7568D9BB55FF9E5287D586017AE645C0CF8E292A
     sudo apt-get update -y
     sudo apt-get install pritunl-client-electron -y
+    echo -e "
+USEFUL COMMANDS :
+
+sudo pritunl set app.reverse_proxy true
+sudo pritunl set app.redirect_server false
+sudo pritunl set app.server_ssl false
+sudo pritunl set app.server_port 80
+
+FOR NGINX
+sudo pritunl set app.reverse_proxy true
+sudo pritunl set app.redirect_server false
+
+server {
+ 
+      listen 443;
+      server_name nowyousee.storehippo.com;
+      error_log /var/log/nginx/vpn.access.log;
+ 
+      ssl on;
+          ssl_certificate /etc/nginx/sites-enabled/stores.storehippo.com/stores.storehippo.com_fullchain.txt;
+          ssl_certificate_key /etc/nginx/sites-enabled/stores.storehippo.com/stores.storehippo.com_privkey.txt;
+          ssl_session_cache  builtin:1000  shared:SSL:10m;
+          ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+          ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+          ssl_prefer_server_ciphers on;
+ 
+        location / {
+                     proxy_pass http://localhost:4430/;
+                     proxy_http_version 1.1;
+                     proxy_set_header Upgrade $http_upgrade;
+                     proxy_set_header Connection "upgrade";
+                     proxy_set_header Host $http_host;
+                     proxy_set_header X-Real-IP $remote_addr;
+                     proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;
+                     proxy_set_header X-Forward-Proto http;
+                     proxy_set_header X-Nginx-Proxy true;
+                     proxy_redirect off;
+                   }
+ 
+}
+
+
+"
     fi
 fi       
 if [ $number == 4 ]; then
