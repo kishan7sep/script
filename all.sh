@@ -72,8 +72,8 @@ server {
       error_log /var/log/nginx/vpn.access.log;
  
       ssl on;
-          ssl_certificate /etc/nginx/sites-enabled/stores.storehippo.com/stores.storehippo.com_fullchain.txt;
-          ssl_certificate_key /etc/nginx/sites-enabled/stores.storehippo.com/stores.storehippo.com_privkey.txt;
+          ssl_certificate /etc/nginx/sites-enabled/com_fullchain.txt;
+          ssl_certificate_key /etc/nginx/sites-enabled/com_privkey.txt;
           ssl_session_cache  builtin:1000  shared:SSL:10m;
           ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
           ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
@@ -122,8 +122,8 @@ server {
       error_log /var/log/nginx/vpn.access.log;
  
       ssl on;
-          ssl_certificate /etc/nginx/sites-enabled/stores.storehippo.com/stores.storehippo.com_fullchain.txt;
-          ssl_certificate_key /etc/nginx/sites-enabled/stores.storehippo.com/stores.storehippo.com_privkey.txt;
+          ssl_certificate /etc/nginx/sites-enabled/com_fullchain.txt;
+          ssl_certificate_key /etc/nginx/sites-enabled/com_privkey.txt;
           ssl_session_cache  builtin:1000  shared:SSL:10m;
           ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
           ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
