@@ -35,4 +35,15 @@ docker run --rm \
     -e NODE_ID="5b8e11e4610f990034635e98" --network host --privileged -d \
     docker.io/pritunl/pritunl-zero
     
+ docker run \
+    -d \
+    --privileged \
+    -e PRITUNL_MONGODB_URI=mongodb://52.90.136.62:27017/pritunl \
+    -p 11940:1194/udp \
+    -p 11940:1194/tcp \
+    -p 8000:80/tcp \
+    -p 4430:443/tcp \
+    -v /dev/net/tun:/dev/net/tun \
+    jippi/pritunl
+    
  # chrome
