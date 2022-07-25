@@ -19,3 +19,20 @@ sudo loginctl enable-linger nxautomation
 # FOR USE PRIVILIAGE PORT TO USER LIKE 80 443
 kernel.unprivileged_userns_clone=1
 add this to /etc/sysctl.conf
+
+sudo reboot
+
+NOTE: reboot needed
+
+
+# pritunl
+
+docker run --rm \
+    --name zero \
+    -p 8000:80 \
+    -p 4430:443 \
+    -e MONGO_URI="mongodb://52.90.136.62:27017/pritunl-zero" \
+    -e NODE_ID="5b8e11e4610f990034635e98" --network host --privileged -d \
+    docker.io/pritunl/pritunl-zero
+    
+ # chrome
