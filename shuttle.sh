@@ -13,11 +13,12 @@ export DOCKER_HOST=unix:///run/user/995/docker.sock
 
 docker run -v db:/data/db -d --name mongo -h pritunldb mongo:latest
 
-docker run --privileged -v /etc/localtime:/etc/localtime:ro 
---name pritunl --sysctl net.ipv6.conf.all.disable_ipv6=0 
--h pritunl --link mongo 
--p 8002:80 -p 4430:443 -p 1194:1194 -p 1194:1194/udp 
--p 1195:1195/udp -e TZ=UTC goofball222/pritunl:latest
+docker run --privileged -v /etc/localtime:/etc/localtime:ro \
+--name pritunl --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+-h pritunl --link mongo \
+-p 8002:80 -p 4430:443 -p 1194:1194 \
+-p 1195:1195/udp -e TZ=UTC -d \
+-p 1194:1194/udp -p 14567:14567/udp -e MONGODB_URI=mongodb://52.90.136.62:27017 goofball222/pritunl:latest
 
 version: '3'
 
