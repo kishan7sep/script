@@ -8,16 +8,13 @@ sudo docker run --name sshuttle -d \
 
 
 
+docker run -v db:/data/db -d --name mongo -h pritunldb mongo:latest
 
-docker run --name db -d --network bridge -v ./db:/data/db mongo
-
-docker run  --network bridge \
---privileged --sysctl net.ipv6.conf.all.disable_ipv6=0 \
--v /etc/localtime:/etc/localtime:ro \
--p 8000:80 -p 4430:4430 \
--p 1194:1194 -p 1194:1194/udp \
--p 1195:1195/udp -e TZ=UTC \
-goofball222/pritunl:latest
+docker run --privileged -v /etc/localtime:/etc/localtime:ro 
+--name pritunl --sysctl net.ipv6.conf.all.disable_ipv6=0 
+-h pritunl --link mongo 
+-p 8002:80 -p 4430:443 -p 1194:1194 -p 1194:1194/udp 
+-p 1195:1195/udp -e TZ=UTC goofball222/pritunl:latest
 
 version: '3'
 
