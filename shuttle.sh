@@ -1,3 +1,34 @@
+docker run --name nginx -p 8000:80 --link chrome -v /home/nxautomation/run/bin/nginx.conf:/etc/nginx/nginx.conf -d nginx
+docker run -p 3000 -d --name chrome browserless/chrome
+
+
+
+worker_processes  5;  ## Default: 1
+#error_log  logs/error.log;
+#pid        logs/nginx.pid;
+
+events {
+  worker_connections  4096;  ## Default: 1024
+}
+
+stream {
+    upstream ssh {
+        server chrome:3000;
+    }
+    server {
+        listen 80;
+        proxy_pass ssh;
+    }
+}
+
+
+
+
+
+
+
+
+
 sudo docker run --name sshuttle -d \
 -e SSH_USERNAME=nxautomation \
 -e SSH_HOST=20.244.48.236 \
