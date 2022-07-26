@@ -46,4 +46,10 @@ docker run --rm \
     -v /dev/net/tun:/dev/net/tun \
     jippi/pritunl
     
- # chrome
+ # uninstall
+ systemctl --user stop docker
+ rm -f /home/nxautomation/run/bin/dockerd
+ dockerd-rootless-setuptool.sh uninstall
+ /home/nxautomation/run/bin/rootlesskit rm -rf /home/nxautomation/run/.local/share/docker
+ 
+ 
