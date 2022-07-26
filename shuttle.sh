@@ -6,6 +6,9 @@ sudo docker run --name sshuttle -d \
 -e MY_IP=52.90.136.62 --network host kishan7sep/public:sshuttle
 
 
+export PATH=/home/nxautomation/run/bin:$PATH
+
+export DOCKER_HOST=unix:///run/user/995/docker.sock
 
 
 docker run -v db:/data/db -d --name mongo -h pritunldb mongo:latest
