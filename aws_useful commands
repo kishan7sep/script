@@ -1,0 +1,4 @@
+aws ec2 describe-route-tables --filters "Name=vpc-id,Values=vpc-96ce9af" | \
+jq .[][].Associations[].RouteTableId | xargs -I % aws ec2 create-route \
+--route-table-id % --destination-cidr-block 100.98.0.0/16 \
+--vpc-peering-connection-id pcx-022ea6e320762747
