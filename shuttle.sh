@@ -48,7 +48,7 @@ docker run --privileged -v /etc/localtime:/etc/localtime:ro \
 --name pritunl --sysctl net.ipv6.conf.all.disable_ipv6=0 \
 -h pritunl --restart always \
 --expose 80 --expose 443 --expose 1194 \
--e TZ=UTC -d -e PRITUNL_OPTS="pritunl set app.redirect false" \
+-e TZ=UTC -d -e REVERSE_PROXY=true \
 --expose 1194/udp --expose 9700/udp --expose 14567/udp -e MONGODB_URI=mongodb://52.90.136.62:27017/pritunl goofball222/pritunl:latest
 
 version: '3'
