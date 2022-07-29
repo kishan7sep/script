@@ -1,7 +1,13 @@
 docker run --name nginx -p 8000:80 --link chrome --link pritunl -v /home/nxautomation/run/bin/nginx.conf:/etc/nginx/nginx.conf -d nginx
-docker run -p 3000 -d --name chrome browserless/chrome
+docker run --expose 3000 -d --name chrome browserless/chrome
 
-
+docker run --rm \
+    --name pritunl \
+    --expose 80 \
+    --expose 443 \
+    -e MONGO_URI="mongodb://52.90.136.62:27017/pritunl-zero" \
+    -e NODE_ID="5b8e11e4610f990034635e98" --network host --privileged -d \
+    docker.io/pritunl/pritunl-zero
 
 worker_processes  5;  ## Default: 1
 #error_log  logs/error.log;
