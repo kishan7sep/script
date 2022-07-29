@@ -1,4 +1,4 @@
-docker run --name nginx -p 8000:80 --link chrome -v /home/nxautomation/run/bin/nginx.conf:/etc/nginx/nginx.conf -d nginx
+docker run --name nginx -p 8000:80 --link chrome --link pritunl -v /home/nxautomation/run/bin/nginx.conf:/etc/nginx/nginx.conf -d nginx
 docker run -p 3000 -d --name chrome browserless/chrome
 
 
