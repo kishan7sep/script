@@ -1,4 +1,8 @@
 
+export PATH=/home/nxautomation/run/bin:$PATH
+
+export DOCKER_HOST=unix:///run/user/995/docker.sock
+
 docker network create my
 
 docker run -p 8100:81 -p 8000:80 \
