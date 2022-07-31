@@ -5,7 +5,7 @@ export DOCKER_HOST=unix:///run/user/995/docker.sock
 
 docker network create my
 
-docker run -p 8100:81 -p 8000:80 \
+docker run -p 127.0.0.1:8100:81 -p 127.0.0.1:8000:80 \
 -v /home/nxautomation/run/bin/data:/data \
 -v /home/nxautomation/run/bin/letsencrypt:/etc/letsencrypt \
 --network my -d jc21/nginx-proxy-manager:latest
