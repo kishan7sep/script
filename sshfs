@@ -1,0 +1,1 @@
+sshfs -o IdentityFile=~/Documents/pem_files/pwc-asp2-prod-bastion.pem ec2-user@154.71.200.215:/home/ec2-user/.aws /home/kishan/.aws
